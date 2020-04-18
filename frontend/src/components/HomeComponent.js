@@ -6,7 +6,7 @@ class HomeComponent extends React.Component {
       return (
         <div>
           <h1>
-            Aplicación para manejar clientes y productos
+            Manejo de Granjas 
           </h1>
         </div>
       );
