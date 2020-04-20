@@ -9,19 +9,18 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 40vh;
+  background-color: cadetblue;
+  min-height: 8vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(6px + 2vmin);
   color: white;
 }
 
 
 .App-main {
-  background-color: #cac2f7;
+  background-color: #CAC295;
   min-height: 40vh;
   display: flex;
   flex-direction: column;
