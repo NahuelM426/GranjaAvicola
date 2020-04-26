@@ -32,32 +32,25 @@ class ApexChart extends Component {
             id: "basic-bar"
           },
           xaxis: {
-            categories: prds.map(function(recolecion)
-                   {return recolecion.fecha})       
+            categories: prds.map(function(recolecion){
+            const data = recolecion.fecha
+            return data;
+          })       
           }
         }
       });
       this.setState({series:
         [{
-          name: "series-1",
+          name: "Galpon-1",
           data: prds.map(function(recolecion)
-           {return recolecion.cantidadDeHuevos}) 
+           {return recolecion.mortalidad}) 
           }
         ] 
       });  
     })
   }   
-
-   
-
-    setDatosRecolect(){
-     this.state.recolecion.data.concat(1);
-     console.log(this.state.recolecion.data);
-    //  this.setState({recolecion:recolecion2});
-    }
- 
   onClick = () =>{
-    console.log(this.state.base);
+    console.log(this.state);
   } 
 
   render() {
@@ -70,9 +63,8 @@ class ApexChart extends Component {
               options={this.state.options}
               series={this.state.series}
               type="line"
-              width="800"
+              width="400"
             />
-            {/* <button onClick={this.onClick}> Hor </button> */}
             <button onClick={this.onClick}> Cargar Datos </button>
             
           </div>
