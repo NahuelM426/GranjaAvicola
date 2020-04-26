@@ -6,52 +6,58 @@ class ApexChart extends Component {
     super(props);
 
     this.state = {
-      base:[],
-      recolecion:[{
-        data:[]
-      }],
       options: {
         chart: {
           id: "basic-bar"
         },
         xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+          categories: []
         }
       },
       series: [
         {
           name: "series-1",
-          data: [30, 40, 45, 50, 49, 60, 70, 91]
+          data: []
         }
       ]
     };
-    this.setDatosRecolect = this.setDatosRecolect.bind(this);
   }
-  
   componentWillMount() {
-    fetch(`http://localhost:8888/recolecion`)
-    .then( res => res.json())
-    .then( prds => this.setState({base: 
-      prds.map(function(recolecion){
-        return recolecion.mortalidad
-      })}
-      ))
-    // .then(this.setDatosRecolect);
-  }
-  setDatosRecolect(){
-   const recolecion2 = this.state.recolecion.map(function(recolecion){
-      return recolecion.data.concat(this.state.base);
-   })
-   this.setState({recolecion:recolecion2});
+    fetch(`http://localhost:8888/recolecion`)     
+    .then( res => res.json())     
+    .then((prds) =>{
+      this.setState({options:
+        { 
+          chart: {
+            id: "basic-bar"
+          },
+          xaxis: {
+            categories: prds.map(function(recolecion)
+                   {return recolecion.fecha})       
+          }
+        }
+      });
+      this.setState({series:
+        [{
+          name: "series-1",
+          data: prds.map(function(recolecion)
+           {return recolecion.cantidadDeHuevos}) 
+          }
+        ] 
+      });  
+    })
+  }   
 
-  }
+   
+
+    setDatosRecolect(){
+     this.state.recolecion.data.concat(1);
+     console.log(this.state.recolecion.data);
+    //  this.setState({recolecion:recolecion2});
+    }
+ 
   onClick = () =>{
-    // const mortalidad = this.state.recolecion.map(function(recolecion){
-    //   return recolecion.mortalidad
-    // })
-    // this.setState({series:mortalidad})
-    this.setDatosRecolect();
-    console.log(this.state.recolecion.data);
+    console.log(this.state.base);
   } 
 
   render() {

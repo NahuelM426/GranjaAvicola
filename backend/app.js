@@ -10,7 +10,7 @@ mongoConnection.connect( (db) => {
     
     recolecionHome = new Home ("recolecion",db)
 
-    // recolecionHome.insert(new Recolecion(new Date("26-3-20"),300,2))
+    recolecionHome.insert(new Recolecion(new Date("2016-05-18T16: 00: 00Z"),300,2))
     // recolecionHome.insert(new Recolecion(new Date("27-3-20"),300,0))
     // recolecionHome.insert(new Recolecion(new Date("28-3-20"),290,1))
     // recolecionHome.insert(new Recolecion(new Date("29-3-20"),225,1))
