@@ -1,17 +1,34 @@
 
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
+
 class ApexChart extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      base:[],
+      fechas:{},
       options: {
         chart: {
-          id: "basic-bar"
+          id: "basic-bar",
+          foreColor: '#333',
+          background:'#f4f4f4'
         },
         xaxis: {
           categories: []
+        },
+        fill:{
+          colors:['#f44336']
+        },
+        title:{
+          text:'Mortalidad',
+          align:'center',
+          margin:20,
+          offsetY:20,
+          style:{
+            fontSize:'25px'
+          }
         }
       },
       series: [
@@ -20,7 +37,8 @@ class ApexChart extends Component {
           data: []
         }
       ]
-    };
+    }
+    ;
   }
   componentWillMount() {
     fetch(`http://localhost:8888/recolecion`)     
@@ -39,37 +57,101 @@ class ApexChart extends Component {
           }
         }
       });
-      this.setState({series:
+      this.setState({base:
         [{
           name: "Galpon-1",
           data: prds.map(function(recolecion)
            {return recolecion.mortalidad}) 
           }
-        ] 
+        ]
       });  
+      this.setState({series:
+        [{
+          name: "Galpon-1",
+          data: prds.map(function(recolecion)
+           {return recolecion.cantidadDeHuevos}) 
+          }
+        ] 
+      });
+      this.setState({fechas:
+        { 
+          chart: {
+            id: "basic-bar",
+            foreColor: '#333',
+            background:'#f4f4f4'
+          },
+          xaxis: {
+            categories: prds.map(function(recolecion){
+            const data = recolecion.fecha
+            return data;
+          })       
+          },
+          plotOptions:{
+            bar:{
+              horizontal:true
+            }
+          },
+          fill:{
+            colors:['#f44336']
+          },
+          title:{
+            text:'Huevos',
+            align:'center',
+            margin:20,
+            offsetY:20,
+            style:{
+              fontSize:'25px'
+            }
+          }
+        }
+            })  
     })
   }   
   onClick = () =>{
-    console.log(this.state);
-  } 
+    this.setState({
+    fechas:{
+      ...this.state.options,
+      plotOptions: {
+        ...this.state.fechas.plotOptions,
+      bar:{
+        ...this.state.fechas.plotOptions.bar,
+        horizontal:false
+      }
+      }
+    } 
+  });
+  }; 
 
   render() {
     return (
+    <React.Fragment>
+
       <div className="app">
         <div className="row">
           <div className="mixed-chart">
-            <h1>Mortalidad </h1>
             <Chart
               options={this.state.options}
-              series={this.state.series}
+              series={this.state.base}
               type="line"
-              width="400"
+              height="450"
+              width='100%'
             />
-            <button onClick={this.onClick}> Cargar Datos </button>
-            
           </div>
+          <div className="mixed-chart">
+             <Chart
+              options={this.state.fechas}
+              series={this.state.series}
+              type="bar"
+              height="450"
+              width='150%'
+            />
+
+          </div>
+            <button onClick={this.onClick}> Cargar Datos </button>
+
         </div>
       </div>
+    </React.Fragment>
     );
   }
 }
