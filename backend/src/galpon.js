@@ -1,11 +1,10 @@
 class Galpon {
 
-    constructor(nombre,fechaIngresosAnimales,pesaje,mortalidad,cantidadDeHuevos) {
+    constructor(nombre,fechaIngresosAnimales,pesaje,cantidadDeAnimales) {
         this.nombre = nombre;
         this.pesaje = pesaje;
         this.fechaIngresosAnimales = fechaIngresosAnimales;
-        this.mortalidad = mortalidad;
-        this.cantidadDeHuevos = cantidadDeHuevos;
+        this.cantidadDeAnimales = cantidadDeAnimales;
         
     }
 }

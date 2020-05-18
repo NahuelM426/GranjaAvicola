@@ -1,6 +1,7 @@
 
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
+var moment = require('moment');
 
 class ApexChart extends Component {
   constructor(props) {
@@ -51,7 +52,7 @@ class ApexChart extends Component {
           },
           xaxis: {
             categories: prds.map(function(recolecion){
-            const data = recolecion.fecha
+            const data = moment(recolecion.fecha).format('YYYY-MM-DD')
             return data;
           })       
           }
@@ -82,7 +83,7 @@ class ApexChart extends Component {
           },
           xaxis: {
             categories: prds.map(function(recolecion){
-            const data = recolecion.fecha
+            const data = moment(recolecion.fecha).format('DD-MMM-YYYY')
             return data;
           })       
           },
@@ -92,7 +93,7 @@ class ApexChart extends Component {
             }
           },
           fill:{
-            colors:['#f44336']
+            colors:['#fd7e14']
           },
           title:{
             text:'Huevos',
@@ -122,13 +123,11 @@ class ApexChart extends Component {
   });
   }; 
 
+
   render() {
     return (
     <React.Fragment>
-
-      <div className="app">
-        <div className="row">
-          <div className="mixed-chart">
+          <div class="container-fluid">
             <Chart
               options={this.state.options}
               series={this.state.base}
@@ -137,20 +136,18 @@ class ApexChart extends Component {
               width='100%'
             />
           </div>
-          <div className="mixed-chart">
+
+          <div class="container-fluid">
              <Chart
               options={this.state.fechas}
               series={this.state.series}
               type="bar"
               height="450"
-              width='150%'
+              width='100%'
             />
 
           </div>
-            <button onClick={this.onClick}> Cargar Datos </button>
-
-        </div>
-      </div>
+            <button onClick={this.onClick} className="btn btn-primary"> state </button>        
     </React.Fragment>
     );
   }
