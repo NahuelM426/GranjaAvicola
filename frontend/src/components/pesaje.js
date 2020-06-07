@@ -1,7 +1,11 @@
 
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
+import Select from 'react-select'
 import image from "../img/gallina.jpg"
+import '../App.css';
+
+var moment = require('moment');
 
 class Pesajes extends Component {
   constructor(props) {
@@ -10,8 +14,10 @@ class Pesajes extends Component {
     this.recorerArray = this.recorerArray.bind(this);
     this.grafico = this.grafico.bind(this);
     this.state = {
-      pesaje:{},
+      fechas:{},
       pesos:{},
+      todosLosPesos:{},
+      selectedOption: null,
       contandor:0,
       options: {
         chart: {
@@ -54,8 +60,15 @@ class Pesajes extends Component {
     fetch(`http://localhost:8888/pesaje`)     
     .then( res => res.json())     
     .then( prds =>{
-       this.setState({pesos : prds},this.grafico);
+       this.setState({todosLosPesos: prds});
+       this.setState({fechas:prds.map(function(prds){
+        const data = prds.fecha
+        const data2 = {label:data};
+        return data2;
+      })
     })
+    }
+    )
   }
   round_to_precision(x, precision) {
     var y = +x + (precision === undefined ? 0.5 : precision/2);
@@ -76,7 +89,8 @@ class Pesajes extends Component {
   }
   fechas(){
     this.state.pesos.map(function(p){
-      return p.fecha;
+      const data = moment(p.fecha).format('YYYY-MM-DD')
+      return data;
     })
   }
   
@@ -126,12 +140,10 @@ class Pesajes extends Component {
     for (const [key, val] of Object.entries(data2)) {
       if((key == min)){
         valorMin.push(val);
-      };
-    }
-    for (const [key, val] of Object.entries(data2)) {
+      }
       if((key == max)){
         valorMax.push(val);
-      };
+      }
     }
     let maxVal = valorMax.pop(0);
     let minVal = valorMin.pop(0);
@@ -140,25 +152,28 @@ class Pesajes extends Component {
 
     console.log("minValor",minVal);
     console.log("maxValor",maxVal);
+
+
+    // for (const [key, val] of Object.entries(data2)) {
+    //   if((key < mas10)){
+    //     valorBajoPeso.push(val);
+    //   };
+    // }
+
     for (const [key, val] of Object.entries(data2)) {
       if((key < mas10)){
         valorBajoPeso.push(val);
       };
-    }
-
-    for (const [key, val] of Object.entries(data2)) {
       if((key > menos10)){
         valorSobrePeso.push(val);
       };
-    }
-
-
-    console.log("valor",valorBajoPeso);
-     for (const [key, val] of Object.entries(data2)) {
       if((key<= menos10 && key >=mas10)){
         valoresEnRango.push(val);
       }; 
     }
+
+
+    console.log("valor",valorBajoPeso);
 
     for (const [key, val] of Object.entries(data2)) {
       valor.push(val);
@@ -233,7 +248,7 @@ class Pesajes extends Component {
               color: '#fff',
               background: '#cf3000',
             },
-            text: '-10%',
+            text: '+10%',
           }
          },
          {
@@ -246,7 +261,7 @@ class Pesajes extends Component {
               color: '#fff',
               background: '#4a5b00',
             },
-            text: '+10%',
+            text: '-10%',
           }
          },
           {
@@ -313,13 +328,37 @@ class Pesajes extends Component {
       ] 
     });
   }
-  onClick = () =>{
-    this.fechas();
-    console.log("fechas",this.fechas());
+  
+  
+  handleChange = selectedOption => {
+    this.setState(
+      {selectedOption},this.pesosPorFecha);
+  };
+  pesosPorFecha(){
+    const resultado = this.state.todosLosPesos.find( todosLosPesos => todosLosPesos.fecha === ''+this.state.selectedOption.label+'' );
+    this.setState({pesos:[resultado]},this.grafico);
+    this.setState({selectedOption : null});
+    console.log("state",this,this.state);
+    console.log("resultado",resultado);
   }
+
+  onClick = () =>{
+    this.pesosPorFecha()
+  }
+
+
   render() {
+    const { selectedOption } = this.state;
     return (
     <React.Fragment>
+          <div className="select">
+            <Select
+              placeholder = {"SelectFecha"}
+              value={selectedOption}
+              onChange={this.handleChange}
+              options={this.state.fechas}
+            />
+          </div>
           <div class="container-fluid">
             <Chart
               options={this.state.options}

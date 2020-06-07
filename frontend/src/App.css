@@ -57,3 +57,8 @@ header ul li {
 a {
   color: white
 }
+.select {
+  margin-right: auto;
+  padding: 5px;
+  width: 185px;
+}
