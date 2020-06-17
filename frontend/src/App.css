@@ -1,3 +1,5 @@
+
+
 .App {
   text-align: center;
 }
@@ -61,4 +63,21 @@ a {
   margin-right: auto;
   padding: 5px;
   width: 185px;
+}
+.box {
+  margin-right: auto;
+  width: 30%;
+  margin-top: 44px;
+
+}
+.box2 {
+  float: left;
+  margin-left: auto;
+  margin-top: -233px;
+  width: 70%;
+}
+#one {
+  position: fixed;
+  top: 80px;
+  left: 10px;
 }

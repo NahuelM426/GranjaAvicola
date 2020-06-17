@@ -5,6 +5,7 @@ import Select from 'react-select'
 import image from "../img/gallina.jpg"
 import '../App.css';
 
+
 var moment = require('moment');
 
 class Pesajes extends Component {
@@ -47,28 +48,61 @@ class Pesajes extends Component {
       series: [
         {
           name: "series-1",
-          data: [
-            
-          ]
+          data: []
         }
-      ]
-    }
-    ;
+      ],
+      seriesT: [],
+      optionsT: {
+        chart: {
+          width: 380,
+          type: 'pie',
+        },
+        labels: [],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+      },  
+    };
   }
      
   componentDidMount() {
     fetch(`http://localhost:8888/pesaje`)     
     .then( res => res.json())     
     .then( prds =>{
-       this.setState({todosLosPesos: prds});
+       this.setState({todosLosPesos: prds},this.ultimoPesoCargado);
        this.setState({fechas:prds.map(function(prds){
-        const data = prds.fecha
+        const data = moment (prds.fecha).format('DD-MM-YYYY')
         const data2 = {label:data};
         return data2;
-      })
+        })
+      });
     })
-    }
-    )
+
+  }
+  mapFormatFecha(){
+    return this.state.todosLosPesos.map(function(prds){
+        const data = prds.fecha
+        return data;
+      });
+  }
+  ultimoPesoCargado(){
+    var dates = this.mapFormatFecha();
+    console.log("dates",dates)
+    let arrayFechas = dates.map((fechaActual) => new Date(fechaActual));
+    var max = new Date (Math.max(...arrayFechas));
+    const resultado = this.state.todosLosPesos.find( todosLosPesos => moment (todosLosPesos.fecha).format('DD-MM-YYYY') === ''+moment (max).format('DD-MM-YYYY')+'' );
+    console.log("resul",resultado);
+    console.log("max",moment(max).format('DD-MM-YYYY'))
+
+    this.setState({pesos:[resultado]},this.grafico);
   }
   round_to_precision(x, precision) {
     var y = +x + (precision === undefined ? 0.5 : precision/2);
@@ -136,6 +170,7 @@ class Pesajes extends Component {
     let valorSobrePeso = [];
     let valorMin = [];
     let valorMax = [];
+    let graficoTor= [];
     
     for (const [key, val] of Object.entries(data2)) {
       if((key == min)){
@@ -153,12 +188,6 @@ class Pesajes extends Component {
     console.log("minValor",minVal);
     console.log("maxValor",maxVal);
 
-
-    // for (const [key, val] of Object.entries(data2)) {
-    //   if((key < mas10)){
-    //     valorBajoPeso.push(val);
-    //   };
-    // }
 
     for (const [key, val] of Object.entries(data2)) {
       if((key < mas10)){
@@ -183,6 +212,7 @@ class Pesajes extends Component {
 
     var totalSobrePeso = valorSobrePeso.reduce((a,b) => a + b,0);
     var porcentanjeSobrePesos = (100 / totalDeGallinas)*totalSobrePeso;
+
     var redondeoDeSobrePesos =this.round_to_precision(porcentanjeSobrePesos,1);
    
     console.log("SobreTotalGallinas",totalSobrePeso);
@@ -191,17 +221,52 @@ class Pesajes extends Component {
 
     var totalBajoPeso = valorBajoPeso.reduce((a,b) => a + b,0);
     var porcentanjeBajoPesos = (100 / totalDeGallinas)*totalBajoPeso;
+
     var redondeoDeBajoPesos =this.round_to_precision(porcentanjeBajoPesos,1);
+    
     console.log("bajoTotal",totalBajoPeso);
     console.log("bajoTotalPorcentaje",porcentanjeBajoPesos);
     console.log("bajoRedondeo",redondeoDeBajoPesos);
+
     var totalDelRango = valoresEnRango.reduce((a, b) => a + b, 0);
     var porcentanje = (100 / totalDeGallinas)*totalDelRango;
+
     var redondeoDeUniformidad =this.round_to_precision(porcentanje,1)
 
+    graficoTor.push(redondeoDeBajoPesos,redondeoDeSobrePesos,redondeoDeUniformidad);
+
+    console.log("graficoTorta",graficoTor);
+    this.setState({seriesT: graficoTor,
+      optionsT: {
+        chart: {
+          width: 380,
+          type: 'pie',
+        },
+        labels: ['Bajo Peso','Sobre Peso','Uniformidad'],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+      }});
 
     this.setState({options:
-      { 
+      {
+        title:{
+          text:'Uniformidad ' +moment(this.state.pesos[0].fecha).format('DD-MM-YYYY')+'',
+          align:'left',
+          margin:20,
+          offsetY:20,
+          style:{
+            fontSize:'25px'
+          }
+        }, 
         chart: {
           id: "basic-bar"
         },
@@ -334,8 +399,9 @@ class Pesajes extends Component {
     this.setState(
       {selectedOption},this.pesosPorFecha);
   };
+  
   pesosPorFecha(){
-    const resultado = this.state.todosLosPesos.find( todosLosPesos => todosLosPesos.fecha === ''+this.state.selectedOption.label+'' );
+    const resultado = this.state.todosLosPesos.find( todosLosPesos => moment (todosLosPesos.fecha).format('DD-MM-YYYY') === ''+this.state.selectedOption.label+'' );
     this.setState({pesos:[resultado]},this.grafico);
     this.setState({selectedOption : null});
     console.log("state",this,this.state);
@@ -343,7 +409,13 @@ class Pesajes extends Component {
   }
 
   onClick = () =>{
-    this.pesosPorFecha()
+    var dates = this.mapFormatFecha();
+    console.log("dates",dates)
+    let arrayFechas = dates.map((fechaActual) => new Date(fechaActual));
+    var max = new Date (Math.max(...arrayFechas));
+    const resultado = this.state.todosLosPesos.find( todosLosPesos => moment (todosLosPesos.fecha).format('DD-MM-YYYY') === ''+moment (max).format('DD-MM-YYYY')+'' );
+    console.log("resul",resultado.pesos);
+    console.log("max",moment(max).format('DD-MM-YYYY'))
   }
 
 
@@ -351,7 +423,10 @@ class Pesajes extends Component {
     const { selectedOption } = this.state;
     return (
     <React.Fragment>
-          <div className="select">
+   
+    <div class="container">
+      <div class="row align-items-start">
+          <div class="col-4">
             <Select
               placeholder = {"SelectFecha"}
               value={selectedOption}
@@ -359,7 +434,17 @@ class Pesajes extends Component {
               options={this.state.fechas}
             />
           </div>
-          <div class="container-fluid">
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <Chart
+             options={this.state.optionsT} 
+             series={this.state.seriesT} 
+             type="pie" 
+             width={380}
+            />
+          </div> 
+          <div class="col-8">
             <Chart
               options={this.state.options}
               series={this.state.series}
@@ -368,7 +453,10 @@ class Pesajes extends Component {
               width='100%'
             />
           </div>
+      </div>
+    </div>
           <button onClick={this.onClick} className="btn btn-primary"> state </button>       
+
     </React.Fragment>
     );
   }
