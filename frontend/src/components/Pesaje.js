@@ -77,8 +77,11 @@ class Pesajes extends Component {
     fetch(`http://localhost:8888/pesaje`)     
     .then( res => res.json())     
     .then( prds =>{
-       this.setState({todosLosPesos: prds},this.ultimoPesoCargado);
-       this.setState({fechas:prds.map(function(prds){
+      // this.setState({todosLosPesos: prds},this.ultimoPesoCargado);
+      this.setState({todosLosPesos: prds});
+      this.ultimoPesoCargado();
+      console.log("todosLosPesos",this.state.todosLosPesos)
+      this.setState({fechas:prds.map(function(prds){
         const data = moment (prds.fecha).format('DD-MM-YYYY')
         const data2 = {label:data};
         return data2;
@@ -87,6 +90,7 @@ class Pesajes extends Component {
     })
 
   }
+
   mapFormatFecha(){
     return this.state.todosLosPesos.map(function(prds){
         const data = prds.fecha
@@ -396,8 +400,7 @@ class Pesajes extends Component {
   
   
   handleChange = selectedOption => {
-    this.setState(
-      {selectedOption},this.pesosPorFecha);
+    this.setState({selectedOption},this.pesosPorFecha);
   };
   
   pesosPorFecha(){

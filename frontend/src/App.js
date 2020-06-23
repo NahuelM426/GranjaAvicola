@@ -2,8 +2,9 @@ import React from 'react';
 import HomeComponent from './components/HomeComponent'
 import Granjas from './components/Granjas'
 import ApexChart from './components/ApexChart'
-import Pesaje from './components/pesaje'
-import RegistrarPesaje from './components/ragistrarPesaje'
+import Pesaje from './components/Pesaje'
+import RegistrarPesaje from './components/RagistrarPesaje'
+
 
 import {BrowserRouter as Router, Route, Switch, Redirect, NavLink} from "react-router-dom"
 import './App.css';
@@ -22,6 +23,7 @@ function PesajeComponent(){
   return (<Pesaje entity="Pesaje"/>)
 }
 
+
 function RegistrarPesajeComponent(){
   return (<RegistrarPesaje entity="registrarPesaje"/>)
 }
@@ -36,6 +38,7 @@ function App() {
           <li><NavLink to="/ApexChart">Estadistica</NavLink></li>
           <li><NavLink to="/Pesaje">Pesaje</NavLink></li>
           <li><NavLink to="/registrarPesaje">RegistrarPesos</NavLink></li>
+         
           
         </ul>
       </header>
@@ -46,6 +49,7 @@ function App() {
             <Route path="/ApexChart" component={EstadisticaComponent} />
             <Route path="/Pesaje" component={PesajeComponent} />
             <Route path="/registrarPesaje" component={RegistrarPesajeComponent} />
+           
             <Redirect to="/" />
           </Switch>
       </main>
