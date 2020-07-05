@@ -20,6 +20,7 @@ handleSumit = (event) =>{
     this.setState({
         text:''
     });
+    event.preventDefault();
 }
 render(){
     return ( 

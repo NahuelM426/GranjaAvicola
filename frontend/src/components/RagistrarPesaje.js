@@ -20,31 +20,17 @@ class registrarPesaje extends React.Component{
           }
         }
       }   
-      handleChange(event) {
+      handleChange =(event)=> {
         var newPesaje = Object.assign({}, this.state.pesaje);
         newPesaje[event.target.name] = event.target.value;
         console.log("pesaje",newPesaje)
         this.setState({pesaje: newPesaje});
       }
       estadoInicial(){
-        this.setState( {pesaje:{fecha: "",pesos: []}});
+        this.setState({fecha:""});
+        this.setState({todos:[]})
       }
-      listo = () => {
-        let vale =  this.state.todos.map(function(p){return p.text}).map(Number);
-        console.log("listas",this.state.todos);
-        this.setState({
-          pesaje:{
-            ...this.state.pesaje,
-            pesos: vale
-          }
-        })
-      }
-      handleSubmit(event) {
-        this.listo();
-        // this.agregarPesaje()
-        event.preventDefault();
-      }
-      agregarPesaje(event){
+      agregarPesaje =(event)=>{
         fetch(`http://localhost:8888/pesaje`, {
             method: "POST",
             body: JSON.stringify(this.state.pesaje),
@@ -53,15 +39,29 @@ class registrarPesaje extends React.Component{
             "Content-Type": "application/json"
           }
         })
-        // .then(this.estadoInicial);
+        .then(this.estadoInicial);
       }
-
-      onClick = () =>{
-        this.agregarPesaje();
-      
+      listo = () => {
+        let text =  this.state.todos.map(function(p){return p.text}).map(Number);
+        console.log("listas",this.state.todos);
+        console.log("text",text);
+        var {pesaje} = this.state;
+        pesaje.pesos = text;
+        this.setState(
+          {pesaje: pesaje},
+          console.log(this.state.pesaje)
+          );
+        
       }
-
-
+      handleSubmit =(event)=> {
+        this.listo();
+        this.agregarPesaje()
+        event.preventDefault();
+      }
+      event = (event)=>{
+        event.preventDefault()
+      }
+  
       addTodo = todo => {
         this.setState({
           todos: [todo, ...this.state.todos]
@@ -113,10 +113,10 @@ class registrarPesaje extends React.Component{
         }
         return (
         <div style={{ textAlign: "center" }}>        
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.event}>
              <label class="sr-only" for="inlineFormInputName2">Fecha</label>      
                 <div>
-                  <input type="date" 
+                  <input type="datetime-local" 
                     class="form-control" 
                     placeholder="Fecha"
                     name="fecha"
@@ -139,13 +139,13 @@ class registrarPesaje extends React.Component{
           </div>
           <div>
           <button style={ {margin :"5px"}} onClick={()=> this.updateTodoToShow("all")} class="btn btn-primary mb-2" >
-          all
+          Todos
           </button>
           <button style={ {margin :"5px"}} onClick={()=> this.updateTodoToShow("active")} class="btn btn-primary mb-2">
-          active
+          activo
           </button>
           <button style={ {margin :"5px"}} onClick={()=> this.updateTodoToShow("complete")} class="btn btn-primary mb-2">
-          complete
+          Tachados
           </button>
           <div >
           {this.state.todos.some(todo => todo.complete) ? ( 
@@ -158,8 +158,7 @@ class registrarPesaje extends React.Component{
           </div>
         </div>
       </div>
-      <button style={ {margin :"5px"}}class="btn btn-outline-success" onClick={this.listo}> Listo</button>
-      <button style={ {margin :"5px"}}class="btn btn-outline-success" onClick={this.onClick}> Guardar</button>
+      <button style={ {margin :"5px"}}class="btn btn-outline-success" onClick={this.handleSubmit}> Listo</button>
     </form>  
     </div>
   );
