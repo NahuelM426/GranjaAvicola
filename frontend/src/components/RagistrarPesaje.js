@@ -3,6 +3,7 @@
 import React from 'react';
 import TodoForm from "./TodoFord";
 import Todo from './Todo';
+import Select from 'react-select'
 
 class registrarPesaje extends React.Component{
     constructor(props) {
@@ -10,8 +11,12 @@ class registrarPesaje extends React.Component{
     
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.agregagregarPesajeAGalpon=this.agregagregarPesajeAGalpon.bind(this);
         this.estadoInicial = this.estadoInicial.bind(this);
         this.state = {
+          selectedOption: null,
+          nombreGalpon:{},
+          galpones:{},
           todos:[],
           todoToSho:'all',
           pesaje:{
@@ -20,16 +25,50 @@ class registrarPesaje extends React.Component{
           }
         }
       }   
+      estadoInicial(){
+        this.setState({fecha:""});
+        this.setState({todos:[]});
+        this.setState({nombreGalpon:{}});
+        this.setState({selectedOption: null});
+      }
       handleChange =(event)=> {
         var newPesaje = Object.assign({}, this.state.pesaje);
         newPesaje[event.target.name] = event.target.value;
         console.log("pesaje",newPesaje)
         this.setState({pesaje: newPesaje});
       }
-      estadoInicial(){
-        this.setState({fecha:""});
-        this.setState({todos:[]})
+      componentDidMount() {
+        fetch(`http://localhost:8888/galpones`)     
+        .then( res => res.json())     
+        .then( prds =>{
+          this.setState({galpones: prds});
+          this.setState({nombreGalpon:prds.map(function(prds){
+            const nombre = prds.nombre
+            const nombre2 = {label:nombre};
+            return nombre2;
+            })
+          });
+        })
+
       }
+      agregagregarPesajeAGalpon = (event) => {
+        const resultado = this.state.galpones.find( galpones => galpones.nombre === this.state.selectedOption.label);
+        console.log("resultado",resultado)
+        let _id = resultado._id;
+        console.log("acaaaaa" + event);
+        console.log("idGalpon",this.state.galpones[0]._id)
+        console.log("galpones",this.state.galpones)
+        fetch(`http://localhost:8888/galpones/` + _id, {
+          method: "PUT",
+          body: JSON.stringify(this.state.pesaje),
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          }
+        })
+          .then(this.estadoInicial())
+      }
+
       agregarPesaje =(event)=>{
         fetch(`http://localhost:8888/pesaje`, {
             method: "POST",
@@ -55,7 +94,7 @@ class registrarPesaje extends React.Component{
       }
       handleSubmit =(event)=> {
         this.listo();
-        this.agregarPesaje()
+        this.agregagregarPesajeAGalpon(event)
         event.preventDefault();
       }
       event = (event)=>{
@@ -97,11 +136,14 @@ class registrarPesaje extends React.Component{
           todos: this.state.todos.filter(todo => !todo.complete)
         })
       }
-
+      handleChangeGalpon = selectedOption => {
+        this.setState({selectedOption},this.pesosPorFecha);
+      };
     
 
       render() {
         let todos = [];
+        const { selectedOption } = this.state;
         if(this.state.todoToSho === 'all'){
           todos = this.state.todos;
         }
@@ -112,7 +154,17 @@ class registrarPesaje extends React.Component{
           todos = this.state.todos.filter(todo => todo.complete);
         }
         return (
-        <div style={{ textAlign: "center" }}>        
+        <div style={{ textAlign: "center" }}> 
+         <div class="row align-items-start">
+          <div class="col-8">
+            <Select
+              placeholder = {"Select Galpon"}
+              value={selectedOption}
+              onChange={this.handleChangeGalpon}
+              options={this.state.nombreGalpon}
+            />
+          </div>
+        </div>       
           <form onSubmit={this.event}>
              <label class="sr-only" for="inlineFormInputName2">Fecha</label>      
                 <div>

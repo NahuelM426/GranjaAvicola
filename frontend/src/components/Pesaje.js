@@ -17,7 +17,7 @@ class Pesajes extends Component {
     this.state = {
       fechas:{},
       pesos:{},
-      todosLosPesos:{},
+      todosLosPesos:[],
       selectedOption: null,
       contandor:0,
       options: {
@@ -73,31 +73,47 @@ class Pesajes extends Component {
     };
   }
      
-  componentDidMount() {
-    fetch(`http://localhost:8888/pesaje`)     
-    .then( res => res.json())     
-    .then( prds =>{
-      // this.setState({todosLosPesos: prds},this.ultimoPesoCargado);
-      this.setState({todosLosPesos: prds});
-      this.ultimoPesoCargado();
-      console.log("todosLosPesos",this.state.todosLosPesos)
-      this.setState({fechas:prds.map(function(prds){
-        const data = moment (prds.fecha).format('DD-MM-YYYY')
-        const data2 = {label:data};
-        return data2;
-        })
-      });
-    })
+  // componentDidMount() {
+  //   fetch(`http://localhost:8888/galpones`)     
+  //   .then( res => res.json())     
+  //   .then( prds =>{
+  //     // this.setState({todosLosPesos: prds},this.ultimoPesoCargado);
+  //     this.setState({todosLosPesos: prds[0].pesaje});
+  //     this.ultimoPesoCargado();
+  //     console.log("todosLosPesos",this.state.todosLosPesos)
+  //     this.setState({fechas:prds[0].pesaje.map(function(prds){
+  //       const data = moment (prds.fecha).format('DD-MM-YYYY')
+  //       const data2 = {label:data};
+  //       return data2;
+  //       })
+  //     });
+  //   })
 
+  // }
+  componentWillReceiveProps = (props) => {
+    console.log("props",props)
+    this.setState({todosLosPesos: props.galpon.pesaje},this.ultimoPesoCargado);
+    
+    // this.setState({pesos:props.pesos})
+    this.setState({fechas:props.galpon.pesaje.map(function(prds){
+      const data = moment (prds.fecha).format('DD-MM-YYYY')
+      const data2 = {label:data};
+      return data2;
+    })
+    });
+    console.log("nahue",this.state)
   }
+  
 
   mapFormatFecha(){
+    console.log("todosLosPesos",this.state.todosLosPesos)
     return this.state.todosLosPesos.map(function(prds){
         const data = prds.fecha
         return data;
       });
   }
   ultimoPesoCargado(){
+    console.log("state ultimoCa",this.state )
     var dates = this.mapFormatFecha();
     console.log("dates",dates)
     let arrayFechas = dates.map((fechaActual) => new Date(fechaActual));
@@ -133,6 +149,7 @@ class Pesajes extends Component {
   }
   
   grafico = () =>{
+    console.log("sattedadadadad",this.state)
     let n = 100;
     let pesos = this.state.pesos[0].pesos
     let step = 20;

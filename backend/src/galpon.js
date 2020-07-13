@@ -1,8 +1,8 @@
 class Galpon {
 
-    constructor(nombre,fechaIngresosAnimales,pesaje,cantidadDeAnimales) {
+    constructor(nombre,fechaIngresosAnimales,cantidadDeAnimales) {
         this.nombre = nombre;
-        this.pesaje = pesaje;
+        this.pesaje = [];
         this.fechaIngresosAnimales = fechaIngresosAnimales;
         this.cantidadDeAnimales = cantidadDeAnimales;
         

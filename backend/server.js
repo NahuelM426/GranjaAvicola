@@ -2,8 +2,8 @@ express = require("express");
 bodyParser = require("body-parser");
 var cors = require('cors');
 
+GalponHome = require("./src/mongo/galponHome");
 var homes = {}
-
 
 function register(home) {
   console.log(`registering handlers for ${home.type}`)
@@ -45,6 +45,31 @@ function init() {
     home = homes[req.params.type]
     home.update(req.body)
     res.status(204).end();  
+  })
+
+  server.put("/galpones/:id", (req, res) => {
+    galponId = req.params.id;
+    tx = req.body;
+    galponHome.agregarTx(galponId, tx, (result, galpon) => {
+      if (result == "error") {
+        res.status(400).end();
+      } else {
+        res.status(200).send(galpon);
+      }
+    });
+  });
+  server.post("/galpones/:id", (req, res) => {
+    galponHome = new GalponHome(db)
+    galponId = req.params.id
+    console.log("servel",galponId)
+    tx = req.body
+    galponHome.agregarTx(galponId, tx, (result, galpon) => {
+      if (result == "error") {
+        res.status(400).end();
+      } else {
+        res.status(200).send(galpon);
+      }
+    }) 
   })
 
   server.post("/:type", (req, res) => {
