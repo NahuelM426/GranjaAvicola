@@ -475,8 +475,6 @@ class Pesajes extends Component {
           </div>
       </div>
     </div>
-          <button onClick={this.onClick} className="btn btn-primary"> state </button>       
-
     </React.Fragment>
     );
   }

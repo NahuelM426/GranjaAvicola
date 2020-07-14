@@ -41,73 +41,141 @@ class ApexChart extends Component {
     }
     ;
   }
-  componentWillMount() {
-    fetch(`http://localhost:8888/recolecion`)     
-    .then( res => res.json())     
-    .then((prds) =>{
-      this.setState({options:
-        { 
-          chart: {
-            id: "basic-bar"
-          },
-          xaxis: {
-            categories: prds.map(function(recolecion){
-            const data = moment(recolecion.fecha).format('YYYY-MM-DD')
-            return data;
-          })       
+  componentWillReceiveProps = (props) => {
+    console.log("props",props)
+    console.log("recole",props.galpon.recolecion)
+    
+    this.setState({options:
+      { 
+        chart: {
+          id: "basic-bar"
+        },
+        xaxis: {
+          categories: props.galpon.recolecion.map(function(recolecion){
+          const data = moment(recolecion.fecha).format('YYYY-MM-DD')
+          return data;
+        })       
+        }
+      }
+    });
+    this.setState({base:
+      [{
+        name: props.galpon.name,
+        data: props.galpon.recolecion.map(function(recolecion)
+         {return recolecion.mortalidad}) 
+        }
+      ]
+    });
+    this.setState({series:
+      [{
+        name: "Galpon-1",
+        data: props.galpon.recolecion.map(function(recolecion)
+         {return recolecion.cantidadDeHuevos}) 
+        }
+      ] 
+    }); 
+    this.setState({fechas:
+      { 
+        chart: {
+          id: "basic-bar",
+          foreColor: '#333',
+          background:'#f4f4f4'
+        },
+        xaxis: {
+          categories: props.galpon.recolecion.map(function(recolecion){
+          const data = moment(recolecion.fecha).format('DD-MMM-YYYY')
+          return data;
+        })       
+        },
+        plotOptions:{
+          bar:{
+            horizontal:true
+          }
+        },
+        fill:{
+          colors:['#fd7e14']
+        },
+        title:{
+          text:'Huevos',
+          align:'center',
+          margin:20,
+          offsetY:20,
+          style:{
+            fontSize:'25px'
           }
         }
-      });
-      this.setState({base:
-        [{
-          name: "Galpon-1",
-          data: prds.map(function(recolecion)
-           {return recolecion.mortalidad}) 
-          }
-        ]
-      });  
-      this.setState({series:
-        [{
-          name: "Galpon-1",
-          data: prds.map(function(recolecion)
-           {return recolecion.cantidadDeHuevos}) 
-          }
-        ] 
-      });
-      this.setState({fechas:
-        { 
-          chart: {
-            id: "basic-bar",
-            foreColor: '#333',
-            background:'#f4f4f4'
-          },
-          xaxis: {
-            categories: prds.map(function(recolecion){
-            const data = moment(recolecion.fecha).format('DD-MMM-YYYY')
-            return data;
-          })       
-          },
-          plotOptions:{
-            bar:{
-              horizontal:true
-            }
-          },
-          fill:{
-            colors:['#fd7e14']
-          },
-          title:{
-            text:'Huevos',
-            align:'center',
-            margin:20,
-            offsetY:20,
-            style:{
-              fontSize:'25px'
-            }
-          }
-        }
-            })  
-    })
-  }   
+      }
+          })
+    
+    console.log("nahue",this.state)
+  }
+  // componentWillMount() {
+  //   fetch(`http://localhost:8888/recolecion`)     
+  //   .then( res => res.json())     
+  //   .then((prds) =>{
+  //     this.setState({options:
+  //       { 
+  //         chart: {
+  //           id: "basic-bar"
+  //         },
+  //         xaxis: {
+  //           categories: prds.map(function(recolecion){
+  //           const data = moment(recolecion.fecha).format('YYYY-MM-DD')
+  //           return data;
+  //         })       
+  //         }
+  //       }
+  //     });
+  //     this.setState({base:
+  //       [{
+  //         name: "Galpon-1",
+  //         data: prds.map(function(recolecion)
+  //          {return recolecion.mortalidad}) 
+  //         }
+  //       ]
+  //     });  
+  //     this.setState({series:
+  //       [{
+  //         name: "Galpon-1",
+  //         data: prds.map(function(recolecion)
+  //          {return recolecion.cantidadDeHuevos}) 
+  //         }
+  //       ] 
+  //     });
+  //     this.setState({fechas:
+  //       { 
+  //         chart: {
+  //           id: "basic-bar",
+  //           foreColor: '#333',
+  //           background:'#f4f4f4'
+  //         },
+  //         xaxis: {
+  //           categories: prds.map(function(recolecion){
+  //           const data = moment(recolecion.fecha).format('DD-MMM-YYYY')
+  //           return data;
+  //         })       
+  //         },
+  //         plotOptions:{
+  //           bar:{
+  //             horizontal:true
+  //           }
+  //         },
+  //         fill:{
+  //           colors:['#fd7e14']
+  //         },
+  //         title:{
+  //           text:'Huevos',
+  //           align:'center',
+  //           margin:20,
+  //           offsetY:20,
+  //           style:{
+  //             fontSize:'25px'
+  //           }
+  //         }
+  //       }
+  //           })  
+  //   })
+  // }   
   onClick = () =>{
     this.setState({
     fechas:{

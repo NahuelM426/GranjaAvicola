@@ -5,7 +5,7 @@ const GalponHome = require("./src/mongo/galponHome")
 
 mongoConnection = require("./src/mongo/mongoConnection")
 Home = require("./src/mongo/mongoHome")
-Recolecion = require ("./src/recolecion")
+Recolecion = require ("./src/recoleccion")
 Pesaje = require ("./src/pesaje")
 
 

@@ -1,9 +1,9 @@
 
 // import { produce } from "immer";
 import React from 'react';
+import Select from 'react-select'
 import TodoForm from "./TodoFord";
 import Todo from './Todo';
-import Select from 'react-select'
 
 class registrarPesaje extends React.Component{
     constructor(props) {
@@ -25,7 +25,7 @@ class registrarPesaje extends React.Component{
           }
         }
       }   
-      estadoInicial(){
+      estadoInicial = ()=>{
         this.setState({fecha:""});
         this.setState({todos:[]});
         this.setState({nombreGalpon:{}});

@@ -50,7 +50,20 @@ function init() {
   server.put("/galpones/:id", (req, res) => {
     galponId = req.params.id;
     tx = req.body;
+    console.log("tx",tx)
     galponHome.agregarTx(galponId, tx, (result, galpon) => {
+      if (result == "error") {
+        res.status(400).end();
+      } else {
+        res.status(200).send(galpon);
+      }
+    });
+  });
+  server.put("/galpones/recoleccion/:id", (req, res) => {
+    galponId = req.params.id;
+    tx = req.body;
+    console.log("tx",tx)
+    galponHome.agregarRecolecion(galponId, tx, (result, galpon) => {
       if (result == "error") {
         res.status(400).end();
       } else {

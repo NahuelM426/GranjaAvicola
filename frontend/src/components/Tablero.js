@@ -1,6 +1,7 @@
 import React from 'react';
 import Select from 'react-select'
 import Pesaje from './Pesaje'
+import Apex from './ApexChart'
 
 var moment = require('moment');
 
@@ -87,10 +88,17 @@ class Tablero extends React.Component {
             <div style={ {margin :"8px"}} >
                 <div>{this.state.graficos !== false ? (
                     <div>
+                    <div>
                         <Pesaje 
                             galpon={this.state.galpon}
                             pesos = {this.ultimoPesoCargado}
                        />
+                    </div>
+                    <div>
+                        <Apex
+                            galpon={this.state.galpon}
+                        />
+                    </div>
                     </div>
                 ):true}
                 </div>   

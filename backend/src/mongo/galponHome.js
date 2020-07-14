@@ -33,6 +33,25 @@ class GalponHome {
             }
         })
     }
+    agregarRecolecion(galponId, recoleccion, callback) {
+        var objectId = mongoDriver.ObjectID(galponId)
+        this.galpones.findOne({"_id":objectId}, (error, galpon)=>{
+            if(error)
+                callback("error")
+            else {
+                console.log("el galpon es" + objectId)
+                galpon.recolecion.push(recoleccion)
+                this.galpones.replaceOne({"_id":objectId}, galpon, (error, result)=>{
+                    if(error)
+                        callback("error")
+                    else {
+                        console.log(`Resultado de actualizar: ${JSON.stringify(result)}`)
+                        callback("ok", recoleccion)
+                    }
+                })
+            }
+        })
+    }
 
  borrarCliente(elementId,callback) {
             var objectId = mongoDriver.ObjectID(elementId);
