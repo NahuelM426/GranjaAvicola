@@ -72,24 +72,6 @@ class Pesajes extends Component {
       },  
     };
   }
-     
-  // componentDidMount() {
-  //   fetch(`http://localhost:8888/galpones`)     
-  //   .then( res => res.json())     
-  //   .then( prds =>{
-  //     // this.setState({todosLosPesos: prds},this.ultimoPesoCargado);
-  //     this.setState({todosLosPesos: prds[0].pesaje});
-  //     this.ultimoPesoCargado();
-  //     console.log("todosLosPesos",this.state.todosLosPesos)
-  //     this.setState({fechas:prds[0].pesaje.map(function(prds){
-  //       const data = moment (prds.fecha).format('DD-MM-YYYY')
-  //       const data2 = {label:data};
-  //       return data2;
-  //       })
-  //     });
-  //   })
-
-  // }
   componentWillReceiveProps = (props) => {
     console.log("props",props)
     this.setState({todosLosPesos: props.galpon.pesaje},this.ultimoPesoCargado);

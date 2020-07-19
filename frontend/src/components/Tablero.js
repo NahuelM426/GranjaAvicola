@@ -3,20 +3,20 @@ import Select from 'react-select'
 import Pesaje from './Pesaje'
 import Apex from './ApexChart'
 
-var moment = require('moment');
 
 class Tablero extends React.Component {
     constructor() {
         super();
         this.state = { 
             pesos:{},
+            recoleccion:{},
             selectedOption: null,
             galpon:[],
             todosLosPesos:[],
             galpones: [],
             selected:{},
             fechas:{},
-            graficos:false
+            graficos:true
         }
         this.idGalpon = this.idGalpon.bind(this);
       }
@@ -25,6 +25,7 @@ class Tablero extends React.Component {
         fetch(`http://localhost:8888/galpones`)     
         .then( res => res.json())     
         .then( prds =>{
+          this.setState({galpon:prds[0]},console.log("galpon",this.state))
           this.setState({galpones: prds});
           this.setState({nombreGalpon:prds.map(function(prds){
             const nombre = prds.nombre
@@ -32,6 +33,8 @@ class Tablero extends React.Component {
             return nombre2;
             })
           });
+         
+          
         })
 
       }
@@ -48,28 +51,7 @@ class Tablero extends React.Component {
        
         this.setState({selectedOption:null})
       }
-      mapFormatFecha(){
-        console.log("mapFormaFe",this.state.galpon)
-        return this.state.galpon.pesaje.map(function(prds){
-            const data = prds.fecha
-            console.log("retunr",data)
-            return data;
-          });
-      }
-      ultimoPesoCargado(){
-        console.log("state ultimoCa",this.state )
-
-        var dates = this.mapFormatFecha();
-        console.log("dates",dates)
-        let arrayFechas = dates.map((fechaActual) => new Date(fechaActual));
-        var max = new Date (Math.max(...arrayFechas));
-        const resultado = this.state.galpon.pesaje.find( todosLosPesos => moment (todosLosPesos.fecha).format('DD-MM-YYYY') === ''+moment (max).format('DD-MM-YYYY')+'' );
-        console.log("resul",resultado);
-        console.log("max",moment(max).format('DD-MM-YYYY'))
-    
-        this.setState({pesos:[resultado]});
-        console.log("pesossss",this.state.pesos)
-      }
+      
       render() {
         const { selectedOption } = this.state;
         return (
@@ -88,15 +70,17 @@ class Tablero extends React.Component {
             <div style={ {margin :"8px"}} >
                 <div>{this.state.graficos !== false ? (
                     <div>
+                      <h1>{this.state.galpon.nombre}</h1>
                     <div>
                         <Pesaje 
                             galpon={this.state.galpon}
-                            pesos = {this.ultimoPesoCargado}
+                            // pesos = {this.ultimoPesoCargado}
                        />
                     </div>
                     <div>
                         <Apex
                             galpon={this.state.galpon}
+                            recoleccion = {this.ultimoRecoleccion}
                         />
                     </div>
                     </div>

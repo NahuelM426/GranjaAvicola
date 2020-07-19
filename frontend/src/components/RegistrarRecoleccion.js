@@ -11,6 +11,7 @@ class registrarRecoleccion extends React.Component{
             selectedOption: null,
             nombreGalpon:{},
             galpones:{},
+            galpon:{},
             recoleccion:{
                 fecha:"",
                 cantidadDeHuevos:"",
@@ -19,7 +20,7 @@ class registrarRecoleccion extends React.Component{
         }
     }
     handleChangeGalpon = selectedOption => {
-        this.setState({selectedOption});
+        this.setState({selectedOption},this.galponSelec);
       };
     componentDidMount() {
         fetch(`http://localhost:8888/galpones`)     
@@ -41,13 +42,40 @@ class registrarRecoleccion extends React.Component{
         this.setState({nombreGalpon:{}});
         this.setState({selectedOption: null});
     }
+    galponSelec(){
+      const resultado = this.state.galpones.find( galpones => galpones.nombre === this.state.selectedOption.label);
+      this.setState({
+        galpon:resultado
+      },this.galponUpdate)
+    }
+    galponUpdate(){
+      let cantidad = this.state.galpon.cantidadDeAnimales - this.state.recoleccion.mortalidad
+      var {galpon} = this.state;
+      galpon.cantidadDeAnimales = cantidad;
+      this.setState(
+        {galpon: galpon},
+        console.log(this.state.galpon)
+        );
+      
+    }
+    
     agregagregarRecolecionAGalpon = (event) => {
         const resultado = this.state.galpones.find( galpones => galpones.nombre === this.state.selectedOption.label);
         console.log("resultado",resultado)
+        this.setState({galpon:resultado},this.galponUpdate())
         let _id = resultado._id;
-        console.log("acaaaaa" + event);
+        console.log("acaaaaa" + _id);
         console.log("idGalpon",this.state.galpones[0]._id)
         console.log("galpones",this.state.galpones)
+        // console.log("galpon",galpon)
+        fetch(`http://localhost:8888/galpones/`, {
+          method: "PUT",
+          body: JSON.stringify(this.state.galpon),
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          }
+        })
         fetch(`http://localhost:8888/galpones/recoleccion/` + _id, {
           method: "PUT",
           body: JSON.stringify(this.state.recoleccion),

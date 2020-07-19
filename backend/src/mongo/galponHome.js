@@ -53,7 +53,7 @@ class GalponHome {
         })
     }
 
- borrarCliente(elementId,callback) {
+ borrarGalpon(elementId,callback) {
             var objectId = mongoDriver.ObjectID(elementId);
             this.galpones.findOne({"_id":objectId}, (error, galpon)=>{
                 if(error)
@@ -73,7 +73,7 @@ class GalponHome {
             })
         }
 
-    agregarCliente(n_cliente, cliente, callback) {      
+    agregarGalpon(n_cliente, cliente, callback) {      
             this.galpones.findOne({"n_cliente":n_cliente}, (error,clien)=>{
                 if(error){
                     callback("el cliente no existe")
@@ -92,19 +92,11 @@ class GalponHome {
     
 
 
-    getUnCliente(elementId,callback) {
+    getUnGalpon(elementId,callback) {
             var objectId = elementId
             return this.galpones.findOne({"n_cliente" : objectId}, (error, result) => {
                 if(error) throw error
                 callback (result)
-            })
-        }
-
-    getUnCliente2(elementId) {
-            var objectId = elementId
-            return this.galpones.findOne({"n_cliente" : objectId}, (error, result) => {
-                if(error) throw error
-                return (result)
             })
         }
 
