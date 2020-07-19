@@ -71,9 +71,9 @@ class ApexChart extends Component {
     console.log("props",props)
     console.log("recole",props.galpon.recolecion)
     this.setState({galpon:props.galpon})
-    // this.setState({recoleccion:props.galpon.recolecion})
+    this.setState({recoleccion:props.galpon.recolecion},this.ultimoRecoleccion)
     // this.ultimoRecoleccion();
-    console.log("state",this.state)
+    console.log("state1",this.state)
     this.setState({options:
       { 
         chart: {
@@ -138,10 +138,10 @@ class ApexChart extends Component {
     this.graficoDeRendimiento();
   }
   mapFormatFechaDeRecoleccion(){
-    console.log("mapFormaFe",this.state.galpon)
+    console.log("mapFormaFeaaaaaa",this.state.galpon)
     return this.state.recoleccion.map(function(prds){
         const data = prds.fecha
-        console.log("retunr",data)
+        console.log("retunr22",data)
         return data;
       });
   }
@@ -153,7 +153,7 @@ class ApexChart extends Component {
     const resultado = this.state.recoleccion.find( todosLosPesos => moment (todosLosPesos.fecha).format('DD-MM-YYYY') === ''+moment (max).format('DD-MM-YYYY')+'' );
     console.log("resulnnnnnnnn",resultado);
     console.log("max",moment(max).format('DD-MM-YYYY'))
-    this.setState({recoleccion:[resultado]},this.graficoDeRendimiento);
+    this.setState({recoleccion:resultado},this.graficoDeRendimiento);
     console.log("pesossss",this.state)
     console.log("resull",resultado)
   }
@@ -162,14 +162,15 @@ class ApexChart extends Component {
     let graficoTor= [];
     var totalDeGallinas = this.state.galpon.cantidadDeAnimales;
     console.log("totalRendim",totalDeGallinas)
-    let totalDeHuevos = this.state.recoleccion.cantidadDeHuevos;
+    let totalDeHuevos = this.state.recoleccion.cantidadDeHuevos*30;
+    console.log("3333",this.state.recoleccion.cantidadDeHuevos)
     let rendimiento = (100 / totalDeGallinas)*totalDeHuevos;
 
     let sinRendimiento = (100 / totalDeGallinas)*(totalDeGallinas - totalDeHuevos);
     var redondeoDeRendimiento =this.round_to_precision(rendimiento,1);
     var redondeoDeRendimientoNegativo =this.round_to_precision(sinRendimiento,1);
 
-    graficoTor.push(redondeoDeRendimientoNegativo,redondeoDeRendimiento);
+    graficoTor.push(redondeoDeRendimiento,redondeoDeRendimientoNegativo);
     console.log("grafico000000000000000000000000000000",graficoTor)
     this.setState({seriesT: graficoTor,
             optionsT: {
