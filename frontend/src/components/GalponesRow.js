@@ -17,7 +17,7 @@ class GalponesRow extends React.Component {
     }
     handleSubmit =(id)=> {
         console.log("id",id)
-        fetch("http://localhost:8888/galpones" +id, {
+        fetch(`http://localhost:8888/galpones/` + id, {
             method: "delete",
             headers: {
               Accept: "application/json",
@@ -37,8 +37,8 @@ class GalponesRow extends React.Component {
               <td>{this.props.galpon.fechaIngresosAnimales}</td>
               <td>{this.props.galpon.cantidadDeAnimales}</td>
               <td>
-                <form onSubmit={this.event}>
-                        <button  onClick={() => {
+                <form >
+                        <button  class="btn btn-outline-danger" onClick={() => {
                             this.handleSubmit(this.props.galpon._id);
                             }}>Eliminar</button>
                 </form>

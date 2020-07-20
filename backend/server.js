@@ -93,8 +93,9 @@ function init() {
     res.status(204).end();  
   })
 
-  server.delete("/:galpones/:id", (req, res) => {
+  server.delete("/galpones/:id", (req, res) => {
     galponId = req.params.id;
+    console.log("erro",galponId)
     galponHome.borrarGalpon(galponId, (result, galpon) => {
       if (result == "error") {
         res.status(400).end();
