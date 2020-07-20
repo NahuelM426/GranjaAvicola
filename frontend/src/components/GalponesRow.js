@@ -1,20 +1,34 @@
 import React from 'react';
-import { Redirect } from "react-router-dom";
 
 class GalponesRow extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { redirect: "/" };
         this.selectGalpon = this.selectGalpon.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.actualizar = this.actualizar.bind(this);
     }
     
-    selectGalpon() {
+    selectGalpon=()=> {
         this.props.selector(this.props.galpon)
     }
-    onClick  = () => {
-        return <Redirect to={this.state.redirect} />
+    actualizar() {
+        this.props.actualizarList(this.props.galpones)
     }
+    handleSubmit =(id)=> {
+        console.log("id",id)
+        fetch("http://localhost:8888/galpones" +id, {
+            method: "delete",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            }
+          }).then(this.actualizar);
+
+      }
+      event = (event)=>{
+        event.preventDefault()
+      }
 
     render() {      
         return(
@@ -23,10 +37,12 @@ class GalponesRow extends React.Component {
               <td>{this.props.galpon.fechaIngresosAnimales}</td>
               <td>{this.props.galpon.cantidadDeAnimales}</td>
               <td>
-              <form>
-                <button  onClick={this.onClick}>Home</button>
-              </form>
-             </td>
+                <form onSubmit={this.event}>
+                        <button  onClick={() => {
+                            this.handleSubmit(this.props.galpon._id);
+                            }}>Eliminar</button>
+                </form>
+              </td>
             </tr>)
       
     }

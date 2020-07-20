@@ -8,6 +8,7 @@ class GalponHome {
 
     insert(elemento){
         elemento.pesaje=[];
+        elemento.recoleccion=[];
         this.galpones.insertOne(elemento,(error,result)=>{
             if(error) throw error
             console.log(`Resultado de insertar el elemento: ${JSON.stringify(result)}`)
@@ -40,7 +41,7 @@ class GalponHome {
                 callback("error")
             else {
                 console.log("el galpon es" + objectId)
-                galpon.recolecion.push(recoleccion)
+                galpon.recoleccion.push(recoleccion)
                 this.galpones.replaceOne({"_id":objectId}, galpon, (error, result)=>{
                     if(error)
                         callback("error")
@@ -55,6 +56,7 @@ class GalponHome {
 
  borrarGalpon(elementId,callback) {
             var objectId = mongoDriver.ObjectID(elementId);
+            console.log("elemn",objectId)
             this.galpones.findOne({"_id":objectId}, (error, galpon)=>{
                 if(error)
                     callback("error")
@@ -73,16 +75,16 @@ class GalponHome {
             })
         }
 
-    agregarGalpon(n_cliente, cliente, callback) {      
-            this.galpones.findOne({"n_cliente":n_cliente}, (error,clien)=>{
+    agregarGalpon(n_galpo,galpon, callback) {      
+            this.galpones.findOne({"n_cliente":n_galpo}, (error,clien)=>{
                 if(error){
                     callback("el cliente no existe")
-                this.galpones.insertOne( cliente, (error, result)=>{
+                this.galpones.insertOne( galpon, (error, result)=>{
                         if(error) 
                             callback("error")
                             else{
-                            console.log(`Resultado de insertar: ${JSON.stringify(cliente)}`)
-                            callback("ok", cliente)
+                            console.log(`Resultado de insertar: ${JSON.stringify(galpon)}`)
+                            callback("ok", galpon)
                             }
                             })
                 }

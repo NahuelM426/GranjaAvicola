@@ -24,20 +24,20 @@ mongoConnection.connect( (db) => {
     // pesajeHome.insert(new Pesaje (new Date("2020/01/1"),[1230,1100,1200,1360,1300,1200,1300,1300,1200,1220,1420,1260,1220,1360,1220,1260,1140,1400,1380,1240,1200,1040,1220,1360,1160,1280,1360,1140,1120,1220,1120,1200,1200,1280,1340,1260,1640,1180,1440,1220,1200,1240,1300,1400,1180,1200,1160,1460,1280,1180,1160,1160,1220,1320,1300,1320,1120,1260,1320,1440,1300]))
     // pesajeHome.insert(new Pesaje (new Date("<2020-03-3>"),[960,1000,1200,1100,900,1120,1000,980
     // ,1200,1160,1140,1120,1000]))
-    recolecionHome = new Home ("recolecion",db)
-    recolecionHome.insert(new Recolecion(new Date("<2020-03-2>"),300,2))
-    recolecionHome.insert(new Recolecion(new Date("<2020-03-3>"),300,0))
-    recolecionHome.insert(new Recolecion(new Date("<2020-03-4>"),290,1))
-    recolecionHome.insert(new Recolecion(new Date("<2020-03-5>"),225,1))
-    recolecionHome.insert(new Recolecion(new Date("<2020-03-6>"),211,3))
-    recolecionHome.insert(new Recolecion(new Date("<2020-03-7>"),244,4))
+    // recolecionHome = new Home ("recolecion",db)
+    // recolecionHome.insert(new Recolecion(new Date("<2020-03-2>"),300,2))
+    // recolecionHome.insert(new Recolecion(new Date("<2020-03-3>"),300,0))
+    // recolecionHome.insert(new Recolecion(new Date("<2020-03-4>"),290,1))
+    // recolecionHome.insert(new Recolecion(new Date("<2020-03-5>"),225,1))
+    // recolecionHome.insert(new Recolecion(new Date("<2020-03-6>"),211,3))
+    // recolecionHome.insert(new Recolecion(new Date("<2020-03-7>"),244,4))
     galponHome.insert(galpon);
     galponHome.insert(galpon2)
     server.register(pesajeHome)
     server.register(granjasHome)
     server.register(galponHome)
     server.register(depocitoHome)
-    server.register(recolecionHome)
+    // server.register(recolecionHome)
     server.init();
 })
 

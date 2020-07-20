@@ -1,5 +1,6 @@
 import React from 'react';
 import GalponesRow from "./GalponesRow"
+import Agregar from "./Agregar"
 
 class Galpones extends React.Component {
     constructor() {
@@ -18,6 +19,9 @@ class Galpones extends React.Component {
     render() {
         return(
           <div>
+           <Agregar 
+              galpon={this.state.selected} 
+          />
           <table className="table">
             <thead>
               <tr>
@@ -32,7 +36,12 @@ class Galpones extends React.Component {
           </table>
         </div>)
       }
-
+      actualizarList(unGalpon) {
+        var galpon = this.state.galpones.filter(
+          item => unGalpon._id !== item._id
+        );
+        this.setState({ galpones: galpon });
+      }
 
 
 
@@ -42,10 +51,12 @@ class Galpones extends React.Component {
             <GalponesRow 
             galpon={unGalpon} 
             selector={this.select} 
+            actualizarList={this.actualizarList}
             />
           );
         })
       }
+
     select(unGalpon) {
         this.setState({selected:unGalpon})
         console.log("galpon",this.state)

@@ -15,8 +15,9 @@ class GranjaRow extends React.Component {
         return(
             <tr key={this.props.granja._id} onClick={this.selectGranja}>
             <td>{this.props.granja._id}</td> 
-              <td>{this.props.granja.nombre}</td>
-            </tr>)
+            <td>{this.props.granja.nombre}</td>
+            </tr>
+            )
       
     }
 }

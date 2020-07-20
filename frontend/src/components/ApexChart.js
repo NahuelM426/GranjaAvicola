@@ -69,9 +69,9 @@ class ApexChart extends Component {
  
   componentWillReceiveProps = (props) => {
     console.log("props",props)
-    console.log("recole",props.galpon.recolecion)
+    console.log("recole",props.galpon.recoleccion)
     this.setState({galpon:props.galpon})
-    this.setState({recoleccion:props.galpon.recolecion},this.ultimoRecoleccion)
+    this.setState({recoleccion:props.galpon.recoleccion},this.ultimoRecoleccion)
     // this.ultimoRecoleccion();
     console.log("state1",this.state)
     this.setState({options:
@@ -80,8 +80,8 @@ class ApexChart extends Component {
           id: "basic-bar"
         },
         xaxis: {
-          categories: props.galpon.recolecion.map(function(recolecion){
-          const data = moment(recolecion.fecha).format('YYYY-MM-DD')
+          categories: props.galpon.recoleccion.map(function(recoleccion){
+          const data = moment(recoleccion.fecha).format('YYYY-MM-DD')
           return data;
         })       
         }
@@ -90,16 +90,16 @@ class ApexChart extends Component {
     this.setState({base:
       [{
         name: props.galpon.nombre,
-        data: props.galpon.recolecion.map(function(recolecion)
-         {return recolecion.mortalidad}) 
+        data: props.galpon.recoleccion.map(function(recoleccion)
+         {return recoleccion.mortalidad}) 
         }
       ]
     });
     this.setState({series:
       [{
         name: props.galpon.nombre,
-        data: props.galpon.recolecion.map(function(recolecion)
-         {return recolecion.cantidadDeHuevos}) 
+        data: props.galpon.recoleccion.map(function(recoleccion)
+         {return recoleccion.cantidadDeHuevos}) 
         }
       ] 
     }); 
@@ -111,8 +111,8 @@ class ApexChart extends Component {
           background:'#f4f4f4'
         },
         xaxis: {
-          categories: props.galpon.recolecion.map(function(recolecion){
-          const data = moment(recolecion.fecha).format('DD-MMM-YYYY')
+          categories: props.galpon.recoleccion.map(function(recoleccion){
+          const data = moment(recoleccion.fecha).format('DD-MMM-YYYY')
           return data;
         })       
         },

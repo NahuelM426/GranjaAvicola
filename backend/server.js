@@ -1,8 +1,9 @@
 express = require("express");
 bodyParser = require("body-parser");
 var cors = require('cors');
+const GalponHome = require("./src/mongo/galponHome");
 
-GalponHome = require("./src/mongo/galponHome");
+// GalponHome = require("./src/mongo/galponHome");
 var homes = {}
 
 function register(home) {
@@ -43,6 +44,7 @@ function init() {
 
   server.put("/:type", (req, res) => {
     home = homes[req.params.type]
+    console.log("agragar",req.body)
     home.update(req.body)
     res.status(204).end();  
   })
@@ -91,12 +93,16 @@ function init() {
     res.status(204).end();  
   })
 
-  server.delete("/:type/:id", (req, res) => {
-    home = homes[req.params.type]
-    home.delete(req.params.id)
-    res.status(204).end();  
+  server.delete("/:galpones/:id", (req, res) => {
+    galponId = req.params.id;
+    galponHome.borrarGalpon(galponId, (result, galpon) => {
+      if (result == "error") {
+        res.status(400).end();
+      } else {
+        res.status(200);
+      }
+    });
   });
-
   server.listen(8888, () => {
     console.log("Server running on port 8888");
   });
