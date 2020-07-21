@@ -58,6 +58,25 @@ class ApexChart extends Component {
             }
           }
         }]
+      },
+      seriesM: [],
+      optionsM: {
+        chart: {
+          width: 380,
+          type: 'pie',
+        },
+        labels: [],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
       }
     }
     ;
@@ -72,7 +91,7 @@ class ApexChart extends Component {
     console.log("recole",props.galpon.recoleccion)
     this.setState({galpon:props.galpon})
     this.setState({recoleccion:props.galpon.recoleccion},this.ultimoRecoleccion)
-    // this.ultimoRecoleccion();
+    // this.graficoMotalidad();
     console.log("state1",this.state)
     this.setState({options:
       { 
@@ -154,6 +173,7 @@ class ApexChart extends Component {
     console.log("resulnnnnnnnn",resultado);
     console.log("max",moment(max).format('DD-MM-YYYY'))
     this.setState({recoleccion:resultado},this.graficoDeRendimiento);
+    this.graficoMotalidad();
     console.log("pesossss",this.state)
     console.log("resull",resultado)
   }
@@ -194,6 +214,63 @@ class ApexChart extends Component {
     
     console.log("nahue",this.state)
   }   
+  sumar(numeros){
+    var suma = 0;
+    numeros.forEach (function(numero){
+        suma += numero;
+    }); 
+    console.log("%",suma);
+    return suma;
+  }
+  graficoMotalidad=()=>{
+    let graficoMart= [];
+    var totalDeGallinas = this.state.galpon.cantidadDeAnimales;
+
+    let listaMortalidad =
+    this.state.recoleccion.map(function(recoleccion){
+      return recoleccion.mortalidad
+    })
+    console.log("moratlidad",listaMortalidad)
+    console.log("moratlidadddd",this.sumar(listaMortalidad.map(Number)))
+
+    console.log("3333",this.state.recoleccion.cantidadDeHuevos)
+    let gallinasVivas = (100 / totalDeGallinas)*(totalDeGallinas - this.sumar(listaMortalidad.map(Number)));
+
+    let sinRendimiento = (100 / totalDeGallinas)*this.sumar(listaMortalidad.map(Number));
+    var redondeoDeGallinasVivas =this.round_to_precision(gallinasVivas,0.1);
+    var redondeoDeGallinasDeceso=this.round_to_precision(sinRendimiento,0.1);
+
+    graficoMart.push(redondeoDeGallinasDeceso,redondeoDeGallinasVivas);
+    console.log("grafico000000000000000000000000000000",graficoMart)
+    this.setState({seriesM: graficoMart,
+            optionsM: {
+              chart: {
+                width: 380,
+                type: 'pie',
+              },
+              labels: ['Deceso','Produción'],
+              responsive: [{
+                breakpoint: 480,
+                options: {
+                  chart: {
+                    width: 200
+                  },
+                  legend: {
+                    position: 'bottom'
+                  }
+                }
+              }]
+    }});
+    
+    console.log("nahue",this.state)
+  }
+
+
+
+
+
+
+
   onClick = () =>{
     this.setState({
     fechas:{
@@ -213,11 +290,18 @@ class ApexChart extends Component {
   render() {
     return (
     <React.Fragment>
-            <div class="container-fluid">
-            <h1> Rendimiento </h1>
+          <div class="container-fluid">
+            <h1> Productividad </h1>
             <Chart
              options={this.state.optionsT} 
              series={this.state.seriesT} 
+             type="pie" 
+             width={500}
+            />
+            <h1> Mortalidad </h1>
+            <Chart
+             options={this.state.optionsM} 
+             series={this.state.seriesM} 
              type="pie" 
              width={500}
             />

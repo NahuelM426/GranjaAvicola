@@ -33,10 +33,10 @@ class GalponesRow extends React.Component {
     render() {      
         return(
             <tr key={this.props.galpon._id} onClick={this.selectGalpon}>
-              <td>{this.props.galpon.nombre}</td>
-              <td>{this.props.galpon.fechaIngresosAnimales}</td>
-              <td>{this.props.galpon.cantidadDeAnimales}</td>
-              <td>
+              <td class=" list-group-item-success">{this.props.galpon.nombre}</td>
+              <td class=" list-group-item-warning" >{this.props.galpon.fechaIngresosAnimales}</td>
+              <td class=" list-group-item-warning">{this.props.galpon.cantidadDeAnimales}</td>
+              <td class=" list-group-item-primary">
                 <form >
                         <button  class="btn btn-outline-danger" onClick={() => {
                             this.handleSubmit(this.props.galpon._id);

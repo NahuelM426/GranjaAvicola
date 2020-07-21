@@ -76,7 +76,6 @@ class Pesajes extends Component {
     console.log("props",props)
     this.setState({todosLosPesos: props.galpon.pesaje},this.ultimoPesoCargado);
     
-    // this.setState({pesos:props.pesos})
     this.setState({fechas:props.galpon.pesaje.map(function(prds){
       const data = moment (prds.fecha).format('DD-MM-YYYY')
       const data2 = {label:data};

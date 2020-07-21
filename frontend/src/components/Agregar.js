@@ -28,7 +28,7 @@ class Agregar extends React.Component {
         this.setState({galpon: newGalpon});
       }
       estadoInicial(){
-        this.setState({ galpon:{ nombre: "", cantidadDeAnimales: "", fechas:""}});
+        this.setState({ galpon:{ nombre: "", cantidadDeAnimales: "", fechaIngresosAnimales:""}});
       }
      
      
@@ -48,7 +48,7 @@ class Agregar extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this.state.galpon)
-        })
+        }).then(res => this.props.listado())
           .then(this.estadoInicial);
 
       }
@@ -61,7 +61,7 @@ class Agregar extends React.Component {
         Accept: "application/json",
         "Content-Type": "application/json"
       }
-        })
+        }).then(res => this.props.listado())
           .then(this.estadoInicial);
       }
    
@@ -85,7 +85,7 @@ class Agregar extends React.Component {
            <div class="col-6">
            <label class="sr-only" >Fecha</label>      
                     <div>
-                        <input type="datetime-local" 
+                        <input type="date" 
                             class="form-control" 
                             placeholder="Fecha..."
                             name="fechaIngresosAnimales"
@@ -106,7 +106,9 @@ class Agregar extends React.Component {
                         />
                     </div>
             </div> 
+            <div>
             <button  class="btn btn-outline-success" style={ {margin :"5px"}} onClick={this.handleSubmit}>Listo</button>
+            </div>
           </form>
         </div>
         );

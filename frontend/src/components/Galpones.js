@@ -7,6 +7,7 @@ class Galpones extends React.Component {
       super();
       this.state = { galpones: [], selected:{}}
       this.select = this.select.bind(this);
+      this.listado = this.listado.bind(this);
     }
 
     componentWillMount(){
@@ -21,6 +22,7 @@ class Galpones extends React.Component {
           <div>
            <Agregar 
               galpon={this.state.selected} 
+              listado={this.listado}
           />
           <table className="table">
             <thead>
@@ -60,6 +62,9 @@ class Galpones extends React.Component {
     select(unGalpon) {
         this.setState({selected:unGalpon})
         console.log("galpon",this.state)
+    }
+    listado(){
+      this.componentWillMount();
     }
 }
 export default Galpones    
