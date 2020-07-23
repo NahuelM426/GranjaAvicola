@@ -273,38 +273,6 @@ class Pesajes extends Component {
           id: "basic-bar"
         },
         annotations: {
-          yaxis: [{
-            y: '8',
-            label: {
-              borderColor: '#02A20E',
-              style: {
-                color: '#000000',
-                background: '#02A20E',
-              },
-              text: 'Uniformidad '+redondeoDeUniformidad+ '%',
-            }
-          },{
-            y: '7',
-            label: {
-              borderColor: '#EE2626',
-              style: {
-                color: '#000000',
-                background: '#EE2626',
-              },
-              text: 'Bajo Peso '+redondeoDeBajoPesos+'%',
-            }
-          },{
-            y: '6',
-            label: {
-              borderColor: '#EE2626',
-              style: {
-                color: '#000000',
-                background: '#EE2626',
-              },
-              text: 'Sobre Peso '+redondeoDeSobrePesos+'%',
-            }
-          }
-        ],
          xaxis: [{
           x: '' + menos10 + '',
           strokeDashArray: 0,
