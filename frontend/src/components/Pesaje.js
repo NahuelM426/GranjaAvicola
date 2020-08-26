@@ -394,8 +394,8 @@ class Pesajes extends Component {
     <React.Fragment>
    
     <div class="container">
-      <div class="row align-items-start">
-          <div class="col-4">
+      <div class="row">
+          <div class="col-5">
             <Select
               placeholder = {"SelectFecha"}
               value={selectedOption}
@@ -405,14 +405,14 @@ class Pesajes extends Component {
           </div>
         </div>
         <div class="row">
-          <div class="col-4">
+          <div >
             <Chart
              options={this.state.optionsT} 
              series={this.state.seriesT} 
              type="pie" 
-             width={380}
+             width='100%'
             />
-          </div> 
+          </div>
           <div class="col-8">
             <Chart
               options={this.state.options}
@@ -423,7 +423,7 @@ class Pesajes extends Component {
             />
           </div>
       </div>
-    </div>
+      </div>
     </React.Fragment>
     );
   }

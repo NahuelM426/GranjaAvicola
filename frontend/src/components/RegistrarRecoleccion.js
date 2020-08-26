@@ -88,7 +88,7 @@ class registrarRecoleccion extends React.Component{
       }
     handleSubmit =(event)=> {
         this.agregagregarRecolecionAGalpon(event)
-        event.preventDefault();
+        // event.preventDefault();
       }
     handleChange =(event)=> {
         var newPesaje = Object.assign({}, this.state.recoleccion);
